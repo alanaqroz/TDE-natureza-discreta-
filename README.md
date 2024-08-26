@@ -1,1 +1,3 @@
-TDE da materia de Resoluções de Problemas de Natureza Discreta, segundo semestre do curso de Ciencias da Computação PUCPR
+CONJUTOS
+
+Este trabalho é destinado à obtenção de nota disciplinar na disciplina de Resolução de Problemas de Natureza Discreta.
