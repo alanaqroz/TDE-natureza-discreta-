@@ -1,0 +1,89 @@
+def ler_arquivo(txt):
+    """Lê o arquivo e organiza os conjuntos em uma lista de listas."""
+    try:
+        with open(txt, "r") as file:
+            texto = file.read()
+            linhas = texto.split("\n")
+            conjuntos = []
+            temp = []
+            for i in linhas:
+                if i.strip() == "":
+                    continue
+                temp.append(i.strip())
+                if len(temp) == 3:
+                    conjuntos.append(temp)
+                    temp = []
+            if temp:
+                conjuntos.append(temp)
+            return conjuntos
+    except FileNotFoundError:
+        print(f"Erro: O arquivo '{txt}' não foi encontrado.")
+        return []
+    except Exception as e:
+        print(f"Erro ao ler o arquivo: {e}")
+        return []
+
+
+def ler_conjunto(linhas):
+    """Converte uma string de elementos separados por vírgula em um conjunto."""
+    return set(linhas.strip().split(','))
+
+
+def processar_operacao(tipo, conjunto1, conjunto2):
+    """Processa a operação solicitada entre dois conjuntos."""
+    if tipo == 'U':
+        return conjunto1.union(conjunto2)
+    elif tipo == 'I':
+        return conjunto1.intersection(conjunto2)
+    elif tipo == 'D':
+        return conjunto1.difference(conjunto2)
+    elif tipo == 'C':
+        return cartesiano(conjunto1, conjunto2)
+    else:
+        return 'Operação inválida'
+
+
+def cartesiano(conjunto1, conjunto2):
+    """Calcula o produto cartesiano entre dois conjuntos."""
+    resultado = []
+    for i in conjunto1:
+        for j in conjunto2:
+            resultado.append([i, j])
+    return resultado
+
+
+def executar_operacoes(arquivo):
+    """Executa as operações especificadas no arquivo."""
+    conjuntos = ler_arquivo(arquivo)
+
+    if not conjuntos:
+        print("Nenhum conjunto foi processado devido a erros.")
+        return
+
+    for conjunto in conjuntos:
+        tipo = conjunto[0]
+        conjunto1 = ler_conjunto(conjunto[1])
+        conjunto2 = ler_conjunto(conjunto[2])
+
+        resultado = processar_operacao(tipo, conjunto1, conjunto2)
+
+        print(f'Operação: {tipo}')
+        print(f'Conjunto 1: {conjunto1}')
+        print(f'Conjunto 2: {conjunto2}')
+        print(f'Resultado: {resultado}')
+        print('---')
+
+
+def main():
+    # Solicita ao usuário o nome do arquivo
+    nome_arquivo = input("Digite o nome do arquivo (incluindo a extensão): ").strip()
+
+    # Verifica se o nome do arquivo foi fornecido
+    if nome_arquivo:
+        executar_operacoes(nome_arquivo)
+    else:
+        print("Nenhum nome de arquivo fornecido. O script será encerrado.")
+
+
+if __name__ == "_main_":
+    main()
